@@ -3,34 +3,166 @@
 <head>
   <meta charset="UTF-8">
   <title>AI วิทยาลัย</title>
+
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin: 0;
+      background: linear-gradient(135deg, #eef2ff, #f8fafc);
+    }
+
+    h2 {
+      margin-top: 20px;
+    }
+
+    /* กล่องแชท */
+    #quickchat-embedded {
+      width: 100%;
+      max-width: 900px;
+      height: 80vh;
+      margin: auto;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s ease;
+      display: none;
+      background: #fff;
+    }
+
+    #quickchat-embedded.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* loading */
+    #loading {
+      margin-top: 40px;
+      font-size: 18px;
+      color: #444;
+      animation: fade 1s infinite alternate;
+    }
+
+    @keyframes fade {
+      from { opacity: 0.4; }
+      to { opacity: 1; }
+    }
+
+    /* จุด ... */
+    .dots::after {
+      content: '';
+      animation: dots 1.5s infinite;
+    }
+
+    @keyframes dots {
+      0% { content: ''; }
+      33% { content: '.'; }
+      66% { content: '..'; }
+      100% { content: '...'; }
+    }
+
+    /* fake typing box */
+    #typingBox {
+      display: none;
+      max-width: 900px;
+      margin: 10px auto;
+      text-align: left;
+      background: #ffffff;
+      padding: 12px;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      font-size: 14px;
+    }
+
+    /* cursor กระพริบ */
+    .cursor {
+      display: inline-block;
+      width: 6px;
+      background: black;
+      margin-left: 2px;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0%,100% { opacity: 0; }
+      50% { opacity: 1; }
+    }
+
+  </style>
 </head>
 
-<body style="font-family:sans-serif; text-align:center; margin:0;">
+<body>
 
-<h2>💬 AI ผู้ช่วยวิทยาลัย</h2>
+<h2>💬 AI ผู้ช่วยตอบคำถามวิทยาลัยวังไกลกังวล๒</h2>
+
+<div id="loading">
+  🤖 AI กำลังเตรียมข้อมูล<span class="dots"></span>
+</div>
+
+<div id="typingBox"></div>
 
 <div style="padding: 10px;">
-  <div id="quickchat-embedded" style="
-    width: 100%;
-    max-width: 900px;
-    height: 80vh;
-    margin: auto;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-  "></div>
+  <div id="quickchat-embedded"></div>
 </div>
 
 <script>
+// โหลด quickchat
 (function(e,a,d,i,c,t=a.createElement(d)){
   e[c]=e[c]||function(){(e[c].q=e[c].q||[]).push(arguments)};
   t.src=i;
   t.async=1;
-  a.body.insertAdjacentElement("beforeend",t);
+
+  t.onload = function() {
+    document.getElementById("loading").style.display = "none";
+
+    const chat = document.getElementById("quickchat-embedded");
+    chat.style.display = "block";
+
+    setTimeout(() => {
+      chat.classList.add("show");
+    }, 150);
+
+    // แสดง typing หลอก
+    fakeTyping("AI พร้อมให้บริการแล้ว");
+  };
+
+  a.body.appendChild(t);
 })(window,document,"script","https://bubble.quickchat.ai/chat.js","_quickchat");
 
 _quickchat("containerId", "quickchat-embedded");
 _quickchat("init", "9w0hr7fcp5");
+
+// เอฟเฟกต์พิมพ์ทีละตัว
+function fakeTyping(text) {
+  const box = document.getElementById("typingBox");
+  box.style.display = "block";
+  box.innerHTML = "";
+
+  let i = 0;
+  const speed = 25;
+
+  const interval = setInterval(() => {
+    box.innerHTML = text.substring(0, i) + '<span class="cursor"></span>';
+    i++;
+
+    if (i > text.length) {
+      clearInterval(interval);
+      box.innerHTML = text;
+
+      setTimeout(() => {
+        box.style.display = "none";
+      }, 1500);
+    }
+  }, speed);
+}
+
+// เรียกซ้ำเป็นช่วง (หลอกเหมือน AI คิด)
+setInterval(() => {
+  fakeTyping("AI กำลังประมวลผลคำตอบ...");
+}, 15000);
+
 </script>
 
 </body>
