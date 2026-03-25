@@ -13,12 +13,9 @@
       text-align: center;
       margin: 0;
       overflow: hidden;
-
-      /* 🔥 พื้นหลังมืด + แสงสะท้อนสีโรงเรียน */
       background: #0f172a;
     }
 
-    /* 🔥 แสงสะท้อน */
     body::before {
       content: "";
       position: fixed;
@@ -50,12 +47,9 @@
       height: 80vh;
       border-radius: 16px;
       overflow: hidden;
-
       background: rgba(255,255,255,0.95);
       backdrop-filter: blur(8px);
-
       box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-
       opacity: 0;
       transform: translateY(30px);
       transition: all 0.6s ease;
@@ -67,7 +61,7 @@
       transform: translateY(0);
     }
 
-    /* 🔥 หน้าโหลดเต็มจอ */
+    /* loading */
     #loadingScreen {
       position: fixed;
       top: 0;
@@ -83,7 +77,6 @@
       color: white;
     }
 
-    /* 🔄 spinner */
     .spinner {
       width: 40px;
       height: 40px;
@@ -98,19 +91,16 @@
       to { transform: rotate(360deg); }
     }
 
-    /* typing overlay */
+    /* typing */
     #typingOverlay {
       position: absolute;
       bottom: 25px;
       left: 25px;
       background: #ffffff;
       color: #000;
-
       padding: 10px 14px;
       border-radius: 12px;
-
       box-shadow: 0 2px 12px rgba(0,0,0,0.2);
-
       font-size: 14px;
       display: none;
       max-width: 70%;
@@ -130,12 +120,40 @@
       50% { opacity: 1; }
     }
 
+    /* 🔥 footer fade-in */
+    #footerNote {
+      position: fixed;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+
+      font-size: 12px;
+      color: rgba(255,255,255,0.6);
+
+      background: rgba(0,0,0,0.4);
+      padding: 6px 14px;
+      border-radius: 999px;
+
+      backdrop-filter: blur(6px);
+      z-index: 999;
+
+      opacity: 0;
+      animation: slideFade 0.8s ease forwards;
+      animation-delay: 2.2s;
+    }
+
+    @keyframes slideFade {
+      to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+    }
+
   </style>
 </head>
 
 <body>
 
-<!-- 🔥 หน้าโหลด -->
 <div id="loadingScreen">
   <div class="spinner"></div>
   <div>กำลังโหลด...อยู่ใจเย็นๆ</div>
@@ -153,22 +171,23 @@
 
 </div>
 
+<!-- 🔥 footer -->
+<div id="footerNote">
+  ⚠️ AI อาจมีข้อผิดพลาด โปรดตรวจสอบข้อมูลก่อนใช้งาน
+</div>
+
 <script>
 
-// 🔥 ดีเลย์ก่อนเข้าเว็บ (จำลองโหลดหนัก)
 setTimeout(() => {
   document.getElementById("loadingScreen").style.display = "none";
 }, 1800);
 
-
-// โหลด quickchat
 (function(e,a,d,i,c,t=a.createElement(d)){
   e[c]=e[c]||function(){(e[c].q=e[c].q||[]).push(arguments)};
   t.src=i;
   t.async=1;
 
   t.onload = function() {
-
     const chat = document.getElementById("quickchat-embedded");
     chat.style.display = "block";
 
@@ -184,7 +203,6 @@ setTimeout(() => {
 
 _quickchat("containerId", "quickchat-embedded");
 _quickchat("init", "9w0hr7fcp5");
-
 
 function fakeTyping(text) {
   const overlay = document.getElementById("typingOverlay");
