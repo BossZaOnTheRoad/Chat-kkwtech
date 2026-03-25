@@ -2,34 +2,63 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>AI วิทยาลัย</title>
+  <title>Chat kkwtech</title>
+
+  <link rel="icon" type="image/png" href="favicon.ico">
 
   <style>
     body {
       font-family: sans-serif;
       text-align: center;
       margin: 0;
-      background: linear-gradient(135deg, #eef2ff, #f8fafc);
+      overflow: hidden;
+
+      /* 🔥 พื้นหลังมืด + แสงสะท้อนสีโรงเรียน */
+      background: #0f172a;
+    }
+
+    /* 🔥 แสงสะท้อน */
+    body::before {
+      content: "";
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background:
+        radial-gradient(circle at 30% 20%, rgba(127,22,28,0.4), transparent 40%),
+        radial-gradient(circle at 70% 80%, rgba(52,77,150,0.4), transparent 40%);
+      z-index: 0;
     }
 
     h2 {
       margin-top: 20px;
+      color: white;
+      position: relative;
+      z-index: 1;
     }
 
-    /* กล่องแชท */
+    .chat-container {
+      position: relative;
+      max-width: 900px;
+      margin: auto;
+      padding: 10px;
+      z-index: 1;
+    }
+
     #quickchat-embedded {
       width: 100%;
-      max-width: 900px;
       height: 80vh;
-      margin: auto;
       border-radius: 16px;
       overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(8px);
+
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+
       opacity: 0;
       transform: translateY(30px);
       transition: all 0.6s ease;
       display: none;
-      background: #fff;
     }
 
     #quickchat-embedded.show {
@@ -37,49 +66,59 @@
       transform: translateY(0);
     }
 
-    /* loading */
-    #loading {
-      margin-top: 40px;
-      font-size: 18px;
-      color: #444;
-      animation: fade 1s infinite alternate;
+    /* 🔥 หน้าโหลดเต็มจอ */
+    #loadingScreen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #0f172a;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      color: white;
     }
 
-    @keyframes fade {
-      from { opacity: 0.4; }
-      to { opacity: 1; }
+    /* 🔄 spinner */
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(255,255,255,0.2);
+      border-top: 4px solid #fff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 15px;
     }
 
-    /* จุด ... */
-    .dots::after {
-      content: '';
-      animation: dots 1.5s infinite;
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
 
-    @keyframes dots {
-      0% { content: ''; }
-      33% { content: '.'; }
-      66% { content: '..'; }
-      100% { content: '...'; }
-    }
-
-    /* fake typing box */
-    #typingBox {
-      display: none;
-      max-width: 900px;
-      margin: 10px auto;
-      text-align: left;
+    /* typing overlay */
+    #typingOverlay {
+      position: absolute;
+      bottom: 25px;
+      left: 25px;
       background: #ffffff;
-      padding: 12px;
+      color: #000;
+
+      padding: 10px 14px;
       border-radius: 12px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+
+      box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+
       font-size: 14px;
+      display: none;
+      max-width: 70%;
+      text-align: left;
     }
 
-    /* cursor กระพริบ */
     .cursor {
       display: inline-block;
-      width: 6px;
+      width: 5px;
       background: black;
       margin-left: 2px;
       animation: blink 1s infinite;
@@ -95,19 +134,32 @@
 
 <body>
 
-<h2>💬 AI ผู้ช่วยตอบคำถามวิทยาลัยวังไกลกังวล๒</h2>
-
-<div id="loading">
-  🤖 AI กำลังเตรียมข้อมูล<span class="dots"></span>
+<!-- 🔥 หน้าโหลด -->
+<div id="loadingScreen">
+  <div class="spinner"></div>
+  <div>กำลังโหลด...อยู่ใจเย็นๆ</div>
 </div>
 
-<div id="typingBox"></div>
+<h2>💬 AI ผู้ช่วยตอบคำถามวิทยาลัยวังไกลกังวล ๒</h2>
 
-<div style="padding: 10px;">
+<div class="chat-container">
+
   <div id="quickchat-embedded"></div>
+
+  <div id="typingOverlay">
+    <span id="typingText"></span><span class="cursor"></span>
+  </div>
+
 </div>
 
 <script>
+
+// 🔥 ดีเลย์ก่อนเข้าเว็บ (จำลองโหลดหนัก)
+setTimeout(() => {
+  document.getElementById("loadingScreen").style.display = "none";
+}, 1800);
+
+
 // โหลด quickchat
 (function(e,a,d,i,c,t=a.createElement(d)){
   e[c]=e[c]||function(){(e[c].q=e[c].q||[]).push(arguments)};
@@ -115,16 +167,14 @@
   t.async=1;
 
   t.onload = function() {
-    document.getElementById("loading").style.display = "none";
 
     const chat = document.getElementById("quickchat-embedded");
     chat.style.display = "block";
 
     setTimeout(() => {
       chat.classList.add("show");
-    }, 150);
+    }, 200);
 
-    // แสดง typing หลอก
     fakeTyping("AI พร้อมให้บริการแล้ว");
   };
 
@@ -134,34 +184,29 @@
 _quickchat("containerId", "quickchat-embedded");
 _quickchat("init", "9w0hr7fcp5");
 
-// เอฟเฟกต์พิมพ์ทีละตัว
+
 function fakeTyping(text) {
-  const box = document.getElementById("typingBox");
-  box.style.display = "block";
-  box.innerHTML = "";
+  const overlay = document.getElementById("typingOverlay");
+  const textEl = document.getElementById("typingText");
+
+  overlay.style.display = "block";
+  textEl.innerHTML = "";
 
   let i = 0;
-  const speed = 25;
 
   const interval = setInterval(() => {
-    box.innerHTML = text.substring(0, i) + '<span class="cursor"></span>';
+    textEl.innerHTML = text.substring(0, i);
     i++;
 
     if (i > text.length) {
       clearInterval(interval);
-      box.innerHTML = text;
 
       setTimeout(() => {
-        box.style.display = "none";
-      }, 1500);
+        overlay.style.display = "none";
+      }, 1200);
     }
-  }, speed);
+  }, 25);
 }
-
-// เรียกซ้ำเป็นช่วง (หลอกเหมือน AI คิด)
-setInterval(() => {
-  fakeTyping("AI กำลังประมวลผลคำตอบ...");
-}, 15000);
 
 </script>
 
