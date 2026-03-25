@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>AI วิทยาลัย</title>
+</head>
+
+<body style="font-family:sans-serif; text-align:center; margin:0;">
+
+<h2>💬 AI ผู้ช่วยวิทยาลัย</h2>
+
+<div style="padding: 10px;">
+  <div id="quickchat-embedded" style="
+    width: 100%;
+    max-width: 900px;
+    height: 80vh;
+    margin: auto;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  "></div>
+</div>
+
+<script>
+(function(e,a,d,i,c,t=a.createElement(d)){
+  e[c]=e[c]||function(){(e[c].q=e[c].q||[]).push(arguments)};
+  t.src=i;
+  t.async=1;
+  a.body.insertAdjacentElement("beforeend",t);
+})(window,document,"script","https://bubble.quickchat.ai/chat.js","_quickchat");
+
+_quickchat("containerId", "quickchat-embedded");
+_quickchat("init", "9w0hr7fcp5");
+</script>
+
+</body>
+</html>
