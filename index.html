@@ -33,6 +33,13 @@
       position: relative;
     }
 
+    .ver-date {
+      font-size: 11px;
+      color: #888;
+      font-weight: normal;
+      margin-left: 6px;
+    }
+
     .chat-container {
       max-width: 900px;
       margin: auto;
@@ -58,7 +65,6 @@
       transform: translateY(0);
     }
 
-    /* loading */
     #loadingScreen {
       position: fixed;
       width: 100%;
@@ -83,7 +89,6 @@
       to { transform: rotate(360deg); }
     }
 
-    /* 🔘 ปุ่ม i */
     #infoBtn {
       position: fixed;
       top: 15px;
@@ -99,7 +104,6 @@
       z-index: 1000;
     }
 
-    /* 📬 ปุ่ม */
     #mailBtn {
       position: fixed;
       left: 15px;
@@ -117,27 +121,32 @@
       transition: 0.3s;
     }
 
-    /* 👉 ขยับตาม */
     #mailBtn.move {
       left: 300px;
     }
 
-    /* sidebar */
+    /* ✅ แก้ตรงนี้ */
     #sidebar {
       position: fixed;
       left: -280px;
-      top: 0;
+      top: 20px;
       width: 260px;
-      height: 100%;
       background: white;
       padding: 12px;
+      border-radius: 12px;
       transition: 0.3s;
       z-index: 999;
       text-align: left;
+
+      height: auto;
+      max-height: 80vh;
+      overflow-y: auto;
+
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     }
 
     #sidebar.open {
-      left: 0;
+      left: 10px;
     }
 
     .tip {
@@ -153,7 +162,6 @@
       margin-top: 10px;
     }
 
-    /* modal */
     #updateModal {
       position: fixed;
       width: 100%;
@@ -198,7 +206,6 @@
 <div id="infoBtn">i</div>
 <div id="mailBtn">📬</div>
 
-<!-- sidebar -->
 <div id="sidebar">
   <h3>💡 ความสามารถ</h3>
 
@@ -216,23 +223,31 @@
   </p>
 </div>
 
-<!-- modal -->
 <div id="updateModal">
   <div class="modalBox">
     <h3>📢 อัปเดตระบบ</h3>
 
-    <b>เวอร์ชัน 1.2</b><br>
+    <b>เวอร์ชัน 1.2 <span class="ver-date">26/3/2569</span></b><br>
     - พัฒนาระบบ Data<br>
     - แก้ไขแชท AI ให้ข้อมูลไม่ได้<br>
     - พัฒนาระบบแชท<br><br>
 
-    <b>เวอร์ชัน 1.1</b><br>
+    <b>เวอร์ชัน 1.1 <span class="ver-date">20/3/2569</span></b><br>
     - พัฒนาข้อมูล AI<br>
     - เปิดระบบอัปเดต<br><br>
 
-    <b>เวอร์ชัน 1.0</b><br>
+    <b>เวอร์ชัน 1.0 <span class="ver-date">18/3/2569</span></b><br>
     - เปิดเว็บแชท<br>
-    - ปรับโมเดลใหม่
+    - ปรับโมเดลใหม่<br><br>
+
+    <b>เวอร์ชัน 0.5 <span class="ver-date">15/3/2569</span></b><br>
+    - ถูกเพิ่มให้ Discord<br>
+    - ปรับปรุงข้อมูล<br>
+    - พัฒนาข้อมูล<br><br>
+	
+	<b>เวอร์ชัน 0.5 <span class="ver-date">15/3/2569</span></b><br>
+    - เปิด Project พัฒนา<br>
+    - เพิ่มฐานข้อมูล<br><br>
 
     <br><button onclick="closeModal()">ปิด</button>
   </div>
@@ -248,7 +263,6 @@ setTimeout(() => {
   document.getElementById("loadingScreen").style.display = "none";
 }, 1500);
 
-/* quickchat */
 (function(e,a,d,i,c,t=a.createElement(d)){
   e[c]=e[c]||function(){(e[c].q=e[c].q||[]).push(arguments)};
   t.src=i;
@@ -266,14 +280,12 @@ setTimeout(() => {
 _quickchat("containerId", "quickchat-embedded");
 _quickchat("init", "9w0hr7fcp5");
 
-/* modal */
 const infoBtn = document.getElementById("infoBtn");
 const modal = document.getElementById("updateModal");
 
 infoBtn.onclick = () => modal.style.display = "flex";
 function closeModal() { modal.style.display = "none"; }
 
-/* sidebar + ปุ่มขยับ */
 const mailBtn = document.getElementById("mailBtn");
 const sidebar = document.getElementById("sidebar");
 
