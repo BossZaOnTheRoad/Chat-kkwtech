@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <title>Chat kkwtech</title>
-
+  
   <link rel="icon" type="image/x-icon" href="/favicon.ico?v=2">
   <link rel="shortcut icon" href="/favicon.ico?v=2">
 
   <style>
     body {
       font-family: sans-serif;
-      text-align: center;
       margin: 0;
       overflow: hidden;
       background: #0f172a;
+      text-align: center;
     }
 
     body::before {
@@ -24,21 +24,20 @@
       background:
         radial-gradient(circle at 30% 20%, rgba(127,22,28,0.4), transparent 40%),
         radial-gradient(circle at 70% 80%, rgba(52,77,150,0.4), transparent 40%);
-      z-index: 0;
     }
 
     h2 {
       margin-top: 20px;
       color: white;
-      position: relative;
       z-index: 1;
+      position: relative;
     }
 
     .chat-container {
-      position: relative;
       max-width: 900px;
       margin: auto;
       padding: 10px;
+      position: relative;
       z-index: 1;
     }
 
@@ -46,14 +45,12 @@
       width: 100%;
       height: 80vh;
       border-radius: 16px;
-      overflow: hidden;
       background: rgba(255,255,255,0.95);
-      backdrop-filter: blur(8px);
       box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      display: none;
       opacity: 0;
       transform: translateY(30px);
-      transition: all 0.6s ease;
-      display: none;
+      transition: 0.6s;
     }
 
     #quickchat-embedded.show {
@@ -64,89 +61,127 @@
     /* loading */
     #loadingScreen {
       position: fixed;
-      top: 0;
-      left: 0;
       width: 100%;
       height: 100%;
       background: #0f172a;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
       z-index: 999;
-      color: white;
     }
 
     .spinner {
       width: 40px;
       height: 40px;
       border: 4px solid rgba(255,255,255,0.2);
-      border-top: 4px solid #fff;
+      border-top: 4px solid white;
       border-radius: 50%;
       animation: spin 1s linear infinite;
-      margin-bottom: 15px;
     }
 
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
 
-    /* typing */
-    #typingOverlay {
-      position: absolute;
-      bottom: 25px;
-      left: 25px;
-      background: #ffffff;
-      color: #000;
-      padding: 10px 14px;
-      border-radius: 12px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.2);
-      font-size: 14px;
-      display: none;
-      max-width: 70%;
+    /* 🔘 ปุ่ม i */
+    #infoBtn {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 1000;
+    }
+
+    /* 📬 ปุ่ม */
+    #mailBtn {
+      position: fixed;
+      left: 15px;
+      top: 120px;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      cursor: pointer;
+      z-index: 1000;
+      transition: 0.3s;
+    }
+
+    /* 👉 ขยับตาม */
+    #mailBtn.move {
+      left: 300px;
+    }
+
+    /* sidebar */
+    #sidebar {
+      position: fixed;
+      left: -280px;
+      top: 0;
+      width: 260px;
+      height: 100%;
+      background: white;
+      padding: 12px;
+      transition: 0.3s;
+      z-index: 999;
       text-align: left;
     }
 
-    .cursor {
-      display: inline-block;
-      width: 5px;
-      background: black;
-      margin-left: 2px;
-      animation: blink 1s infinite;
+    #sidebar.open {
+      left: 0;
     }
 
-    @keyframes blink {
-      0%,100% { opacity: 0; }
-      50% { opacity: 1; }
+    .tip {
+      background: #f1f1f1;
+      padding: 8px;
+      margin: 6px 0;
+      border-radius: 8px;
+      font-size: 13px;
     }
 
-    /* 🔥 footer fade-in */
-    #footerNote {
-      position: fixed;
-      bottom: 10px;
-      left: 50%;
-      transform: translateX(-50%) translateY(20px);
-
+    .desc {
       font-size: 12px;
-      color: rgba(255,255,255,0.6);
-
-      background: rgba(0,0,0,0.4);
-      padding: 6px 14px;
-      border-radius: 999px;
-
-      backdrop-filter: blur(6px);
-      z-index: 999;
-
-      opacity: 0;
-      animation: slideFade 0.8s ease forwards;
-      animation-delay: 2.2s;
+      margin-top: 10px;
     }
 
-    @keyframes slideFade {
-      to {
-        opacity: 1;
-        transform: translateX(-50%) translateY(0);
-      }
+    /* modal */
+    #updateModal {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modalBox {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 300px;
+      text-align: left;
+      line-height: 1.6;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 6px 12px;
+      border: none;
+      background: black;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
     }
 
   </style>
@@ -156,32 +191,64 @@
 
 <div id="loadingScreen">
   <div class="spinner"></div>
-  <div>กำลังโหลด...อยู่ใจเย็นๆ</div>
 </div>
 
-<h2>💬 AI ผู้ช่วยตอบคำถามวิทยาลัยวังไกลกังวล ๒</h2>
+<h2>💬 AI ผู้ช่วยตอบคำถามวิทยาลัย</h2>
+
+<div id="infoBtn">i</div>
+<div id="mailBtn">📬</div>
+
+<!-- sidebar -->
+<div id="sidebar">
+  <h3>💡 ความสามารถ</h3>
+
+  <div class="tip">💰 บอกงบประมาณ</div>
+  <div class="tip">📊 ตรวจสอบการใช้จ่าย</div>
+  <div class="tip">👤 แสดงข้อมูลบุคลากร</div>
+
+  <hr>
+
+  <p class="desc">
+    สามารถถาม AI ได้ เช่น<br>
+    - งบประมาณแผนก<br>
+    - รายชื่อครู<br>
+    - ค่าใช้จ่าย
+  </p>
+</div>
+
+<!-- modal -->
+<div id="updateModal">
+  <div class="modalBox">
+    <h3>📢 อัปเดตระบบ</h3>
+
+    <b>เวอร์ชัน 1.2</b><br>
+    - พัฒนาระบบ Data<br>
+    - แก้ไขแชท AI ให้ข้อมูลไม่ได้<br>
+    - พัฒนาระบบแชท<br><br>
+
+    <b>เวอร์ชัน 1.1</b><br>
+    - พัฒนาข้อมูล AI<br>
+    - เปิดระบบอัปเดต<br><br>
+
+    <b>เวอร์ชัน 1.0</b><br>
+    - เปิดเว็บแชท<br>
+    - ปรับโมเดลใหม่
+
+    <br><button onclick="closeModal()">ปิด</button>
+  </div>
+</div>
 
 <div class="chat-container">
-
   <div id="quickchat-embedded"></div>
-
-  <div id="typingOverlay">
-    <span id="typingText"></span><span class="cursor"></span>
-  </div>
-
-</div>
-
-<!-- 🔥 footer -->
-<div id="footerNote">
-  ⚠️ AI อาจมีข้อผิดพลาด ชอบตอบหลอนๆ อย่างกะดูดม้ามา 20 หลุม
 </div>
 
 <script>
 
 setTimeout(() => {
   document.getElementById("loadingScreen").style.display = "none";
-}, 1800);
+}, 1500);
 
+/* quickchat */
 (function(e,a,d,i,c,t=a.createElement(d)){
   e[c]=e[c]||function(){(e[c].q=e[c].q||[]).push(arguments)};
   t.src=i;
@@ -190,12 +257,7 @@ setTimeout(() => {
   t.onload = function() {
     const chat = document.getElementById("quickchat-embedded");
     chat.style.display = "block";
-
-    setTimeout(() => {
-      chat.classList.add("show");
-    }, 200);
-
-    fakeTyping("AI พร้อมให้บริการแล้ว");
+    setTimeout(() => chat.classList.add("show"), 200);
   };
 
   a.body.appendChild(t);
@@ -204,28 +266,21 @@ setTimeout(() => {
 _quickchat("containerId", "quickchat-embedded");
 _quickchat("init", "9w0hr7fcp5");
 
-function fakeTyping(text) {
-  const overlay = document.getElementById("typingOverlay");
-  const textEl = document.getElementById("typingText");
+/* modal */
+const infoBtn = document.getElementById("infoBtn");
+const modal = document.getElementById("updateModal");
 
-  overlay.style.display = "block";
-  textEl.innerHTML = "";
+infoBtn.onclick = () => modal.style.display = "flex";
+function closeModal() { modal.style.display = "none"; }
 
-  let i = 0;
+/* sidebar + ปุ่มขยับ */
+const mailBtn = document.getElementById("mailBtn");
+const sidebar = document.getElementById("sidebar");
 
-  const interval = setInterval(() => {
-    textEl.innerHTML = text.substring(0, i);
-    i++;
-
-    if (i > text.length) {
-      clearInterval(interval);
-
-      setTimeout(() => {
-        overlay.style.display = "none";
-      }, 1200);
-    }
-  }, 25);
-}
+mailBtn.onclick = () => {
+  sidebar.classList.toggle("open");
+  mailBtn.classList.toggle("move");
+};
 
 </script>
 
