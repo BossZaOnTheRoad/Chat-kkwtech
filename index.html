@@ -1,240 +1,221 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Chat kkwtech</title>
-  
-  <link rel="icon" type="image/x-icon" href="/favicon.ico?v=2">
-  <link rel="shortcut icon" href="/favicon.ico?v=2">
+<meta charset="UTF-8">
+<title>Chat kkwtech</title>
 
-  <style>
-    body {
-      font-family: sans-serif;
-      margin: 0;
-      overflow: hidden;
-      background: #0f172a;
-      text-align: center;
-    }
+<link rel="icon" href="/favicon.ico?v=2">
 
-    body::before {
-      content: "";
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      background:
-        radial-gradient(circle at 30% 20%, rgba(127,22,28,0.4), transparent 40%),
-        radial-gradient(circle at 70% 80%, rgba(52,77,150,0.4), transparent 40%);
-    }
+<style>
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background: #0f172a;
+  overflow: hidden;
+}
 
-    h2 {
-      margin-top: 20px;
-      color: white;
-      z-index: 1;
-      position: relative;
-    }
+body::before {
+  content: "";
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(127,22,28,0.4), transparent 40%),
+    radial-gradient(circle at 70% 80%, rgba(52,77,150,0.4), transparent 40%);
+}
 
-    .chat-container {
-      max-width: 900px;
-      margin: auto;
-      padding: 10px;
-      position: relative;
-      z-index: 1;
-    }
+h2 {
+  color: white;
+  margin: 15px;
+}
 
-    #quickchat-embedded {
-      width: 100%;
-      height: 80vh;
-      border-radius: 16px;
-      background: rgba(255,255,255,0.95);
-      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-      display: none;
-      opacity: 0;
-      transform: translateY(30px);
-      transition: 0.6s;
-    }
+.chat-container {
+  max-width: 900px;
+  margin: auto;
+  padding: 10px;
+}
 
-    #quickchat-embedded.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
+#quickchat-embedded {
+  width: 100%;
+  height: 80vh;
+  border-radius: 16px;
+  background: white;
+  display: none;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: 0.5s;
+}
 
-    /* loading */
-    #loadingScreen {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      background: #0f172a;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 999;
-    }
+#quickchat-embedded.show {
+  opacity: 1;
+  transform: translateY(0);
+}
 
-    .spinner {
-      width: 40px;
-      height: 40px;
-      border: 4px solid rgba(255,255,255,0.2);
-      border-top: 4px solid white;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
+/* 🔘 ปุ่ม */
+#infoBtn, #mailBtn {
+  position: fixed;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1000;
+}
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+/* info */
+#infoBtn {
+  top: 15px;
+  right: 15px;
+  width: 35px;
+  height: 35px;
+}
 
-    /* 🔘 ปุ่ม i */
-    #infoBtn {
-      position: fixed;
-      top: 15px;
-      right: 15px;
-      width: 35px;
-      height: 35px;
-      border-radius: 50%;
-      background: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 1000;
-    }
+/* mail */
+#mailBtn {
+  left: 15px;
+  top: 120px;
+  width: 45px;
+  height: 45px;
+  transition: 0.3s;
+}
 
-    /* 📬 ปุ่ม */
-    #mailBtn {
-      position: fixed;
-      left: 15px;
-      top: 120px;
-      width: 45px;
-      height: 45px;
-      border-radius: 50%;
-      background: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      cursor: pointer;
-      z-index: 1000;
-      transition: 0.3s;
-    }
+#mailBtn.move {
+  left: 270px;
+}
 
-    /* 👉 ขยับตาม */
-    #mailBtn.move {
-      left: 300px;
-    }
+/* sidebar */
+#sidebar {
+  position: fixed;
+  left: -260px;
+  width: 240px;
+  height: 100%;
+  background: white;
+  padding: 12px;
+  transition: 0.3s;
+}
 
-    /* sidebar */
-    #sidebar {
-      position: fixed;
-      left: -280px;
-      top: 0;
-      width: 260px;
-      height: 100%;
-      background: white;
-      padding: 12px;
-      transition: 0.3s;
-      z-index: 999;
-      text-align: left;
-    }
+#sidebar.open {
+  left: 0;
+}
 
-    #sidebar.open {
-      left: 0;
-    }
+.tip {
+  background: #eee;
+  padding: 8px;
+  margin: 6px 0;
+  border-radius: 8px;
+  font-size: 13px;
+}
 
-    .tip {
-      background: #f1f1f1;
-      padding: 8px;
-      margin: 6px 0;
-      border-radius: 8px;
-      font-size: 13px;
-    }
+/* modal */
+#updateModal {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
 
-    .desc {
-      font-size: 12px;
-      margin-top: 10px;
-    }
+.modalBox {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 300px;
+  line-height: 1.6;
+}
 
-    /* modal */
-    #updateModal {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.6);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
+/* 📱 Mobile */
+@media (max-width: 599px) {
 
-    .modalBox {
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      max-width: 300px;
-      text-align: left;
-      line-height: 1.6;
-    }
+  #quickchat-embedded {
+    height: 100vh;
+    border-radius: 0;
+  }
 
-    button {
-      margin-top: 10px;
-      padding: 6px 12px;
-      border: none;
-      background: black;
-      color: white;
-      border-radius: 8px;
-      cursor: pointer;
-    }
+  #mailBtn {
+    top: 90px;
+    width: 40px;
+    height: 40px;
+  }
 
-  </style>
+  #mailBtn.move {
+    left: 220px;
+  }
+
+  #sidebar {
+    width: 200px;
+  }
+
+}
+
+/* 📱 Tablet */
+@media (min-width: 600px) and (max-width: 1023px) {
+
+  .chat-container {
+    max-width: 700px;
+  }
+
+  #quickchat-embedded {
+    height: 85vh;
+  }
+
+  #mailBtn.move {
+    left: 250px;
+  }
+
+  #sidebar {
+    width: 220px;
+  }
+
+}
+
+</style>
 </head>
 
 <body>
-
-<div id="loadingScreen">
-  <div class="spinner"></div>
-</div>
 
 <h2>💬 AI ผู้ช่วยตอบคำถามวิทยาลัย</h2>
 
 <div id="infoBtn">i</div>
 <div id="mailBtn">📬</div>
 
-<!-- sidebar -->
 <div id="sidebar">
   <h3>💡 ความสามารถ</h3>
 
   <div class="tip">💰 บอกงบประมาณ</div>
-  <div class="tip">📊 ตรวจสอบการใช้จ่าย</div>
-  <div class="tip">👤 แสดงข้อมูลบุคลากร</div>
+  <div class="tip">📊 ตรวจสอบค่าใช้จ่าย</div>
+  <div class="tip">👤 ข้อมูลบุคลากร</div>
 
   <hr>
 
-  <p class="desc">
-    สามารถถาม AI ได้ เช่น<br>
-    - งบประมาณแผนก<br>
-    - รายชื่อครู<br>
-    - ค่าใช้จ่าย
-  </p>
+  <small>
+    เช่น:<br>
+    - งบแผนก<br>
+    - รายชื่อครู
+  </small>
 </div>
 
-<!-- modal -->
 <div id="updateModal">
   <div class="modalBox">
     <h3>📢 อัปเดตระบบ</h3>
 
-    <b>เวอร์ชัน 1.2</b><br>
+    <b>1.2</b><br>
     - พัฒนาระบบ Data<br>
-    - แก้ไขแชท AI ให้ข้อมูลไม่ได้<br>
-    - พัฒนาระบบแชท<br><br>
+    - แก้แชท AI ข้อมูลไม่ได้<br>
+    - ปรับระบบแชท<br><br>
 
-    <b>เวอร์ชัน 1.1</b><br>
+    <b>1.1</b><br>
     - พัฒนาข้อมูล AI<br>
     - เปิดระบบอัปเดต<br><br>
 
-    <b>เวอร์ชัน 1.0</b><br>
-    - เปิดเว็บแชท<br>
-    - ปรับโมเดลใหม่
+    <b>1.0</b><br>
+    - เปิดเว็บ<br>
+    - ปรับโมเดล
 
-    <br><button onclick="closeModal()">ปิด</button>
+    <br><br>
+    <button onclick="closeModal()">ปิด</button>
   </div>
 </div>
 
@@ -243,10 +224,6 @@
 </div>
 
 <script>
-
-setTimeout(() => {
-  document.getElementById("loadingScreen").style.display = "none";
-}, 1500);
 
 /* quickchat */
 (function(e,a,d,i,c,t=a.createElement(d)){
@@ -273,7 +250,7 @@ const modal = document.getElementById("updateModal");
 infoBtn.onclick = () => modal.style.display = "flex";
 function closeModal() { modal.style.display = "none"; }
 
-/* sidebar + ปุ่มขยับ */
+/* sidebar */
 const mailBtn = document.getElementById("mailBtn");
 const sidebar = document.getElementById("sidebar");
 
