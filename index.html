@@ -176,6 +176,10 @@
       max-width: 300px;
       text-align: left;
       line-height: 1.6;
+	  
+	  max-height: 70vh;
+      overflow-y: auto;
+      scroll-behavior: smooth;
     }
 
     button {
@@ -272,6 +276,31 @@
   </div>
 </div>
 
+<div id="announceModal" style="
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+">
+  <div class="modalBox">
+    <h3>⚠️ ประกาศ</h3>
+
+    เว็บนี้ไม่ใช่เว็บไซต์ทางการของวิทยาลัย<br>
+    ถูกจัดทำโดยนักเรียนของวิทยาลัยการอาชีพวังไกลกังวล ๒<br><br>
+
+    <b>ผู้จัดทำ:</b> สุทธิ แก้วเจิม<br>
+    <b>สาขา:</b> การโรงแรม<br><br>
+
+    ⚠️ AI อาจมีข้อผิดพลาดหรือให้ข้อมูลคลาดเคลื่อน
+
+    <br><button onclick="closeAnnounce()">รับทราบ</button>
+  </div>
+</div>
+
 <div class="chat-container">
   <div id="quickchat-embedded"></div>
 </div>
@@ -282,6 +311,15 @@
 </div>
 
 <script>
+// 🔥 เด้ง popup ตอนเข้าเว็บ
+window.addEventListener("load", () => {
+  document.getElementById("announceModal").style.display = "flex";
+});
+
+// ปิด popup ประกาศ
+function closeAnnounce() {
+  document.getElementById("announceModal").style.display = "none";
+}
 setTimeout(() => {
   document.getElementById("loadingScreen").style.display = "none";
 }, 1500);
