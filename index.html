@@ -125,7 +125,6 @@
       left: 300px;
     }
 
-    /* ✅ แก้ตรงนี้ */
     #sidebar {
       position: fixed;
       left: -280px;
@@ -137,11 +136,8 @@
       transition: 0.3s;
       z-index: 999;
       text-align: left;
-
-      height: auto;
       max-height: 80vh;
       overflow-y: auto;
-
       box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     }
 
@@ -192,6 +188,27 @@
       cursor: pointer;
     }
 
+    /* 🔥 แถบเตือนล่าง */
+    .ai-footer-warning {
+      position: fixed;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(6px);
+      color: #ccc;
+      font-size: 11px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      opacity: 0.7;
+      z-index: 999;
+      transition: 0.3s;
+    }
+
+    .ai-footer-warning:hover {
+      opacity: 1;
+    }
+
   </style>
 </head>
 
@@ -208,13 +225,10 @@
 
 <div id="sidebar">
   <h3>💡 ความสามารถ</h3>
-
   <div class="tip">💰 บอกงบประมาณ</div>
   <div class="tip">📊 ตรวจสอบการใช้จ่าย</div>
   <div class="tip">👤 แสดงข้อมูลบุคลากร</div>
-
   <hr>
-
   <p class="desc">
     สามารถถาม AI ได้ เช่น<br>
     - งบประมาณแผนก<br>
@@ -257,8 +271,12 @@
   <div id="quickchat-embedded"></div>
 </div>
 
-<script>
+<!-- 🔥 แถบเตือน -->
+<div class="ai-footer-warning">
+  ⚠️ AI อาจหลอนไม่เต็ม
+</div>
 
+<script>
 setTimeout(() => {
   document.getElementById("loadingScreen").style.display = "none";
 }, 1500);
@@ -293,7 +311,6 @@ mailBtn.onclick = () => {
   sidebar.classList.toggle("open");
   mailBtn.classList.toggle("move");
 };
-
 </script>
 
 </body>
