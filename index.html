@@ -7,6 +7,15 @@
   <link rel="icon" type="image/x-icon" href="/favicon.ico?v=2">
   <link rel="shortcut icon" href="/favicon.ico?v=2">
 
+  <meta http-equiv="Content-Security-Policy" content="
+  default-src 'self';
+  script-src 'self' 'unsafe-inline' https://bubble.quickchat.ai;
+  connect-src https://bubble.quickchat.ai;
+  frame-src https://bubble.quickchat.ai;
+  style-src 'self' 'unsafe-inline';
+  img-src 'self' data:;
+  ">
+  
   <style>
     body {
       font-family: sans-serif;
@@ -333,6 +342,10 @@
 <div id="updateModal">
   <div class="modalBox">
     <h3>📢 อัปเดตระบบ</h3>
+	
+	<b>เวอร์ชัน 1.6 <span class="ver-date">28/3/2569</span></b><br>
+    - พัฒนา UI<br>
+    - เพิ่มข้อมูล<br><br>
 
 	<b>เวอร์ชัน 1.5 <span class="ver-date">28/3/2569</span></b><br>
     - แก้ปัญหา UI Website สำหรับมือถือและแท็บเล็ต<br>
